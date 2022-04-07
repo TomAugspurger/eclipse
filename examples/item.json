@@ -4108,7 +4108,7 @@
     "data": {
       "href": "abfs://eclipse/Chicago/2021-10-10/data_08175f31-83b8-4811-b68f-14cb2829eb1b_38ba4c75-7565-49da-b500-50afab9df5ec.parquet",
       "type": "application/x-parquet",
-      "title": "Monthly dataset",
+      "title": "Weekly dataset",
       "table:storage_options": {
         "account_name": "ai4edataeuwest"
       },

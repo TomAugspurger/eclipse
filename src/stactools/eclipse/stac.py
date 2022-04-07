@@ -48,7 +48,7 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
         asset_extra_fields=asset_extra_fields,
         count_rows=False,
     )
-    result.assets["data"].title = "Monthly dataset"
+    result.assets["data"].title = "Weekly dataset"
     xpr = re.compile(
         r"^\|\s*(\w*?)\s*\| \w.*?\|.*?\|\s*(.*?)\s*\|$", re.UNICODE | re.MULTILINE
     )
@@ -94,7 +94,7 @@ def create_collection(sample_item: pystac.Item):
     collection.extra_fields["item_assets"] = {
         "data": {
             "type": stac_table.PARQUET_MEDIA_TYPE,
-            "title": "Monthly dataset",
+            "title": "Weekly dataset",
             "roles": ["data"],
             **sample_item.assets["data"].extra_fields,
         }
