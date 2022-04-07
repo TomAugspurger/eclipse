@@ -1,0 +1,162 @@
+{
+  "type": "Collection",
+  "id": "eclipse",
+  "stac_version": "1.0.0",
+  "description": "{{ collection.description }}",
+  "links": [
+    {
+      "rel": "license",
+      "href": "https://www.microsoft.com/en-us/legal/terms-of-use",
+      "type": "text/html",
+      "title": "Terms of use"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+  ],
+  "msft:short_description": "The Project Eclipse Network is a low-cost air quality sensing network for cities and a research project led by the [Urban Innovation Group]( https://www.microsoft.com/en-us/research/urban-innovation-research/) at Microsoft Research.",
+  "msft:container": "eclipse",
+  "msft:storage_account": "ai4edataeuwest",
+  "table:columns": [
+    {
+      "name": "City",
+      "type": "byte_array",
+      "description": "City where the Microsoft Eclipse device is deployed"
+    },
+    {
+      "name": "DeviceId",
+      "type": "int32",
+      "description": "Id for a given device"
+    },
+    {
+      "name": "LocationName",
+      "type": "byte_array",
+      "description": "Unique string describing the device location"
+    },
+    {
+      "name": "Latitude",
+      "type": "double",
+      "description": "Latitude of the device location"
+    },
+    {
+      "name": "Longitude",
+      "type": "double",
+      "description": "Longitude of the device location"
+    },
+    {
+      "name": "ReadingDateTimeUTC",
+      "type": "int96",
+      "description": "The UTC date time string (like 2022-03-04 20:27:25.000) when the reading from the Eclipse sensor was recorded"
+    },
+    {
+      "name": "PM25",
+      "type": "double",
+      "description": "Fine particulate matter (PM 2.5) in \u00b5g/m\u00b3"
+    },
+    {
+      "name": "CalibratedPM25",
+      "type": "double",
+      "description": "Calibrated PM 2.5 in \u00b5g/m\u00b3"
+    },
+    {
+      "name": "Humidity",
+      "type": "double",
+      "description": "Relative humidity"
+    },
+    {
+      "name": "O3",
+      "type": "double",
+      "description": "Ozone in \u00b5g/m\u00b3"
+    },
+    {
+      "name": "NO2",
+      "type": "double",
+      "description": "Nitrous Dioxide in \u00b5g/m\u00b3"
+    },
+    {
+      "name": "RawCO",
+      "type": "double",
+      "description": "Raw carbon monoxide (CO) in PPM"
+    },
+    {
+      "name": "BatteryLevel",
+      "type": "double",
+      "description": "Device battery level in Volts"
+    },
+    {
+      "name": "PercentBattery",
+      "type": "double",
+      "description": "Percent of device battery"
+    },
+    {
+      "name": "CellSignal",
+      "type": "double",
+      "description": "Cellular signal strength in dB"
+    }
+  ],
+  "item_assets": {
+    "data": {
+      "type": "application/x-parquet",
+      "title": "Dataset root",
+      "roles": [
+        "data"
+      ],
+      "table:storage_options": {
+        "account_name": "ai4edataeuwest"
+      }
+    }
+  },
+  "title": "Urban Innovation Eclipse Sensor Data",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -87.93514385942143,
+          42.00088911607326,
+          -87.82413707733014,
+          41.9783005778378
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2021-01-01T00:00:00Z",
+          null
+        ]
+      ]
+    }
+  },
+  "license": "proprietary",
+  "keywords": [
+    "Eclipse",
+    "PM25",
+    "air pollution"
+  ],
+  "providers": [
+    {
+      "name": "Urban Innovation",
+      "roles": [
+        "producer",
+        "licensor",
+        "processor"
+      ],
+      "url": "https://www.microsoft.com/en-us/research/urban-innovation-research/"
+    },
+    {
+      "name": "Microsoft",
+      "roles": [
+        "host"
+      ],
+      "url": "https://planetarycomputer.microsoft.com"
+    }
+  ],
+  "assets": {
+    "thumbnail": {
+      "href": "https://ai4edatasetspublicassets.blob.core.windows.net/assets/eclipse/eclipse.png",
+      "type": "image/png",
+      "title": "Urban Innovation Chicago Sensors"
+    }
+  }
+}
