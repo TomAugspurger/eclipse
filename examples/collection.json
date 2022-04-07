@@ -6,8 +6,8 @@
   "links": [
     {
       "rel": "license",
-      "href": "https://www.microsoft.com/en-us/legal/terms-of-use",
-      "type": "text/html",
+      "href": "https://ai4edatasetspublicassets.blob.core.windows.net/assets/aod_docs/Microsoft%20Project%20Eclipse%20API%20Terms%20of%20Use_Mar%202022.pdf",
+      "type": "application/pdf",
       "title": "Terms of use"
     }
   ],
@@ -15,7 +15,7 @@
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
-  "msft:short_description": "The Project Eclipse Network is a low-cost air quality sensing network for cities and a research project led by the [Urban Innovation Group]( https://www.microsoft.com/en-us/research/urban-innovation-research/) at Microsoft Research.",
+  "msft:short_description": "A network of low-cost air quality sensing network for cities and led by the Urban Innovation Group at Microsoft Research",
   "msft:container": "eclipse",
   "msft:storage_account": "ai4edataeuwest",
   "table:columns": [
@@ -98,7 +98,7 @@
   "item_assets": {
     "data": {
       "type": "application/x-parquet",
-      "title": "Dataset root",
+      "title": "Monthly dataset",
       "roles": [
         "data"
       ],
@@ -112,10 +112,10 @@
     "spatial": {
       "bbox": [
         [
-          -87.93514385942143,
-          42.00088911607326,
-          -87.82413707733014,
-          41.9783005778378
+          -87.94011408252348,
+          41.64454312178303,
+          -87.5241371038952,
+          42.023038586147585
         ]
       ]
     },
@@ -154,9 +154,24 @@
   ],
   "assets": {
     "thumbnail": {
-      "href": "https://ai4edatasetspublicassets.blob.core.windows.net/assets/eclipse/eclipse.png",
+      "href": "https://ai4edatasetspublicassets.blob.core.windows.net/assets/pc_thumbnails/eclipse-thumbnail.png",
       "type": "image/png",
-      "title": "Urban Innovation Chicago Sensors"
+      "title": "Urban Innovation Chicago Sensors",
+      "roles": [
+        "thumbnail"
+      ]
+    },
+    "data": {
+      "href": "abfs://eclipse/Chicago/",
+      "type": "application/x-parquet",
+      "title": "Full dataset",
+      "description": "Full parquet dataset",
+      "table:storage_options": {
+        "account_name": "ai4edataeuwest"
+      },
+      "roles": [
+        "data"
+      ]
     }
   }
 }

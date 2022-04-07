@@ -5,7 +5,7 @@ from pathlib import Path
 import importlib.resources
 
 import fsspec
-import geopandas
+import shapely
 import pystac
 import stac_table
 import adlfs
@@ -21,26 +21,15 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
     p = importlib.resources.read_text("stactools.eclipse", "ChicagoBoundaries.geojson")
     geojsondata = json.loads(p)
     geocoord = geojsondata["features"][0]["geometry"]
-    geometry_type = geocoord["type"]
-    chicago_coords = geocoord["coordinates"]
+    sf = shapely.geometry.shape(geocoord).simplify(0.0001)
 
-    print("Processing", path)
     date = datetime.datetime(*list(map(int, path.split("/")[-1].split("-"))))
     date_id = f"{date:%Y-%m-%d}"
-    print(date_id)
     item = pystac.Item(
         f"eclipse-{date_id}",
-        geometry={
-            "type": geometry_type,
-            "coordinates": chicago_coords,
-        },
-        bbox=[
-            -87.93514385942143,
-            42.00088911607326,
-            -87.82413707733014,
-            41.9783005778378,
-        ],
-        datetime=date,  # snapshot date seems most useful?
+        geometry=shapely.geometry.mapping(sf),
+        bbox=list(sf.bounds),
+        datetime=None,
         properties={
             "start_datetime": date.isoformat() + "Z",
             "end_datetime": (date + datetime.timedelta(days=7)).isoformat() + "Z",
@@ -50,8 +39,6 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
     fs = fsspec.filesystem(protocol, **storage_options)
 
     parquet_files = fs.ls(f"eclipse/Chicago/{date_id}/")
-    for pf in parquet_files:
-        print(pf)
     # Note: For now there is only one parquet file in a folder
     result = stac_table.generate(
         f"abfs://{parquet_files[0]}",
@@ -61,6 +48,7 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
         asset_extra_fields=asset_extra_fields,
         count_rows=False,
     )
+    result.assets["data"].title = "Monthly dataset"
     xpr = re.compile(
         r"^\|\s*(\w*?)\s*\| \w.*?\|.*?\|\s*(.*?)\s*\|$", re.UNICODE | re.MULTILINE
     )
@@ -75,13 +63,13 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
     return result
 
 
-def create_collection(sample_item):
+def create_collection(sample_item: pystac.Item):
     dates = [
         datetime.datetime(2021, 1, 1, tzinfo=datetime.timezone.utc),
         None,
     ]
     extra_fields = {
-        "msft:short_description":  "The Project Eclipse Network is a low-cost air quality sensing network for cities and a research project led by the [Urban Innovation Group]( https://www.microsoft.com/en-us/research/urban-innovation-research/) at Microsoft Research.",
+        "msft:short_description":  "A network of low-cost air quality sensing network for cities and led by the Urban Innovation Group at Microsoft Research",  # noqa: E501
         "msft:container": CONTAINER_NAME,
         "msft:storage_account": ACCOUNT_NAME,
 
@@ -92,12 +80,7 @@ def create_collection(sample_item):
         extent=pystac.Extent(
             spatial=pystac.collection.SpatialExtent(
                 [
-                    [
-                        -87.93514385942143,
-                        42.00088911607326,
-                        -87.82413707733014,
-                        41.9783005778378,
-                    ]
+                    sample_item.bbox,
                 ]
             ),
             temporal=pystac.collection.TemporalExtent([dates]),
@@ -111,7 +94,7 @@ def create_collection(sample_item):
     collection.extra_fields["item_assets"] = {
         "data": {
             "type": stac_table.PARQUET_MEDIA_TYPE,
-            "title": "Dataset root",
+            "title": "Monthly dataset",
             "roles": ["data"],
             **sample_item.assets["data"].extra_fields,
         }
@@ -138,18 +121,25 @@ def create_collection(sample_item):
     # TODO: Upload the eclipse (thumbnail) to the assets directory
     collection.assets["thumbnail"] = pystac.Asset(
         title="Urban Innovation Chicago Sensors",
-        href=(
-            "https://ai4edatasetspublicassets.blob.core.windows.net/"
-            "assets/eclipse/eclipse.png"
-        ),
+        href="https://ai4edatasetspublicassets.blob.core.windows.net/assets/pc_thumbnails/eclipse-thumbnail.png",  # noqa: E501
         media_type="image/png",
+        roles=["thumbnail"],
     )
+    collection.assets["data"] = pystac.Asset(
+        title="Full dataset",
+        href="abfs://eclipse/Chicago/",
+        media_type=stac_table.PARQUET_MEDIA_TYPE,
+        description="Full parquet dataset",
+        roles=["data"],
+        extra_fields=sample_item.assets["data"].extra_fields,
+    )
+
     # TODO: Point to the license pdf (has to be uploaded)
     collection.links = [
         pystac.Link(
             pystac.RelType.LICENSE,
-            target="https://www.microsoft.com/en-us/legal/terms-of-use",
-            media_type="text/html",
+            target="https://ai4edatasetspublicassets.blob.core.windows.net/assets/aod_docs/Microsoft%20Project%20Eclipse%20API%20Terms%20of%20Use_Mar%202022.pdf",  # noqa: E501
+            media_type="application/pdf",
             title="Terms of use",
         )
     ]
@@ -171,7 +161,6 @@ def make_items():
     # 2. Each folder name is a date, grab that list
     fs = adlfs.AzureBlobFileSystem("ai4edataeuwest", credential=sas_token)
     dates = fs.ls("eclipse/Chicago")
-    print(dates)
 
     items = [
         create_item(path, "abfs", storage_options, asset_extra_fields)
