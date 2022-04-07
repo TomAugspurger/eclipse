@@ -65,7 +65,7 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
         r"^\|\s*(\w*?)\s*\| \w.*?\|.*?\|\s*(.*?)\s*\|$", re.UNICODE | re.MULTILINE
     )
     p = importlib.resources.read_text("stactools.eclipse", "column_descriptions.md")
-    column_descriptions = dict(xpr.findall(p.read_text()))
+    column_descriptions = dict(xpr.findall(p))
 
     for column in result.properties["table:columns"]:
         # print(column["name"])
