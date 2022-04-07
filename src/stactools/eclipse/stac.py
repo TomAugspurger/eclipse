@@ -18,8 +18,8 @@ CONTAINER_NAME = "eclipse"
 
 def create_item(path, protocol, storage_options, asset_extra_fields):
     # 3. Get Chicago Coordinates from local file
-    p = importlib.resources.files("stactools.eclipse") / "ChicagoBoundaries.geojson"
-    geojsondata = json.loads(p.read_text())
+    p = importlib.resources.read_text("stactools.eclipse", "ChicagoBoundaries.geojson")
+    geojsondata = json.loads(p)
     geocoord = geojsondata["features"][0]["geometry"]
     geometry_type = geocoord["type"]
     chicago_coords = geocoord["coordinates"]
@@ -64,7 +64,7 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
     xpr = re.compile(
         r"^\|\s*(\w*?)\s*\| \w.*?\|.*?\|\s*(.*?)\s*\|$", re.UNICODE | re.MULTILINE
     )
-    p = importlib.resources.files("stactools.eclipse") / "column_descriptions.md"
+    p = importlib.resources.read_text("stactools.eclipse", "column_descriptions.md")
     column_descriptions = dict(xpr.findall(p.read_text()))
 
     for column in result.properties["table:columns"]:
