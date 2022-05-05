@@ -39,6 +39,7 @@ class PathParts:
 
 def create_item(path, protocol, storage_options, asset_extra_fields):
     # 3. Get Chicago Coordinates from local file
+    path = path.rstrip("/")
     p = importlib.resources.read_text("stactools.eclipse", "ChicagoBoundaries.geojson")
     geojsondata = json.loads(p)
     geocoord = geojsondata["features"][0]["geometry"]
