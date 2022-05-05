@@ -52,7 +52,7 @@
     {
       "name": "PM25",
       "type": "double",
-      "description": "Fine particulate matter (PM 2.5) in \u00b5g/m\u00b3"
+      "description": "Uncalibrated Fine particulate matter (PM 2.5) in \u00b5g/m\u00b3"
     },
     {
       "name": "CalibratedPM25",
@@ -67,17 +67,17 @@
     {
       "name": "O3",
       "type": "double",
-      "description": "Ozone in \u00b5g/m\u00b3"
+      "description": "Uncalibrated Ozone in ppb"
     },
     {
       "name": "NO2",
       "type": "double",
-      "description": "Nitrous Dioxide in \u00b5g/m\u00b3"
+      "description": "Uncalibrated Nitrogen Dioxide in ppb"
     },
     {
-      "name": "RawCO",
+      "name": "CO",
       "type": "double",
-      "description": "Raw carbon monoxide (CO) in PPM"
+      "description": "Uncalibrated Carbon monoxide (CO) in PPM"
     },
     {
       "name": "BatteryLevel",
