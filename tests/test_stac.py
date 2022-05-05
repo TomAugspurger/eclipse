@@ -1,31 +1,10 @@
-import unittest
-
+import planetary_computer
 from stactools.eclipse import stac
 
 
-class StacTest(unittest.TestCase):
-
-    def test_create_collection(self):
-        # Write tests for each for the creation of a STAC Collection
-        # Create the STAC Collection...
-        collection = stac.create_collection()
-        collection.set_self_href("")
-
-        # Check that it has some required attributes
-        self.assertEqual(collection.id, "my-collection-id")
-        # self.assertEqual(collection.other_attr...
-
-        # Validate
-        collection.validate()
-
-    def test_create_item(self):
-        # Write tests for each for the creation of STAC Items
-        # Create the STAC Item...
-        item = stac.create_item("/path/to/asset.tif")
-
-        # Check that it has some required attributes
-        self.assertEqual(item.id, "my-item-id")
-        # self.assertEqual(item.other_attr...
-
-        # Validate
-        item.validate()
+def test_basic():
+    credential = planetary_computer.sas.get_token("ai4edataeuwest", "eclipse").token
+    result = stac.create_item("Chicago/2021-07-11", "abfs", {"account_name": "ai4edataeuwest", "credential": credential}, {})
+    assert result.id == "Chicago-2021-07-11"
+    assert result.properties["start_datetime"] == "2021-07-11T00:00:00Z"
+    assert result.properties["end_datetime"] == "2021-07-18T00:00:00Z"

@@ -1,3 +1,4 @@
+import dataclasses
 import json
 import datetime
 import re
@@ -16,6 +17,26 @@ ACCOUNT_NAME =  "ai4edataeuwest"
 CONTAINER_NAME = "eclipse"
 
 
+@dataclasses.dataclass
+class PathParts:
+    """
+    The components of an Eclipse Path like "Chicago/2021-07-11"
+    """
+    region: str
+    date: datetime.datetime
+
+    @classmethod
+    def from_path(cls, p: str) -> "PathParts":
+        region, date_part = p.split("/")
+        date = datetime.datetime(*list(map(int, date_part.split("-"))))
+
+        return cls(region=region, date=date)
+
+    @property
+    def stac_id(self):
+        return f"{self.region}-{self.date:%Y-%m-%d}"
+
+
 def create_item(path, protocol, storage_options, asset_extra_fields):
     # 3. Get Chicago Coordinates from local file
     p = importlib.resources.read_text("stactools.eclipse", "ChicagoBoundaries.geojson")
@@ -23,22 +44,22 @@ def create_item(path, protocol, storage_options, asset_extra_fields):
     geocoord = geojsondata["features"][0]["geometry"]
     sf = shapely.geometry.shape(geocoord).simplify(0.0001)
 
-    date = datetime.datetime(*list(map(int, path.split("/")[-1].split("-"))))
-    date_id = f"{date:%Y-%m-%d}"
+    parts = PathParts.from_path(path)
+
     item = pystac.Item(
-        f"eclipse-{date_id}",
+        parts.stac_id,
         geometry=shapely.geometry.mapping(sf),
         bbox=list(sf.bounds),
         datetime=None,
         properties={
-            "start_datetime": date.isoformat() + "Z",
-            "end_datetime": (date + datetime.timedelta(days=7)).isoformat() + "Z",
+            "start_datetime": parts.date.isoformat() + "Z",
+            "end_datetime": (parts.date + datetime.timedelta(days=7)).isoformat() + "Z",
         },
     )
 
     fs = fsspec.filesystem(protocol, **storage_options)
 
-    parquet_files = fs.ls(f"eclipse/Chicago/{date_id}/")
+    parquet_files = fs.ls(f"eclipse/{path}/")
     # Note: For now there is only one parquet file in a folder
     result = stac_table.generate(
         f"abfs://{parquet_files[0]}",
