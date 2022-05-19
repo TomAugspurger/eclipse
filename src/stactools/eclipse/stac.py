@@ -122,6 +122,9 @@ def create_collection(sample_item: pystac.Item):
         }
     }
 
+    pystac.extensions.scientific.ScientificExtension.add_to(collection)
+    collection.extra_fields["sci:citation"] = "Daepp, Cabral, Ranganathan et al. (2022) Eclipse: An End-to-End Platform for Low-Cost, Hyperlocal Environmental Sensing in Cities. ACM/IEEE Information Processing in Sensor Networks. Milan, Italy. Eclipse: An End-to-End Platform for Low-Cost, Hyperlocal Environmental Sensing in Cities"  # noqa: E501
+
     collection.stac_extensions.append(stac_table.SCHEMA_URI)
     collection.keywords = ["Eclipse", "PM25", "air pollution"]
     collection.providers = [
@@ -163,6 +166,12 @@ def create_collection(sample_item: pystac.Item):
             target="https://ai4edatasetspublicassets.blob.core.windows.net/assets/aod_docs/Microsoft%20Project%20Eclipse%20API%20Terms%20of%20Use_Mar%202022.pdf",  # noqa: E501
             media_type="application/pdf",
             title="Terms of use",
+        ),
+        pystac.Link(
+            rel="cite-as",
+            target="https://www.microsoft.com/en-us/research/uploads/prod/2022/05/ACM_2022-IPSN_FINAL_Eclipse.pdf",  # noqa: E501
+            media_type="application/pdf",
+            title="Eclipse: An End-to-End Platform for Low-Cost, Hyperlocal Environment Sensing in Cities",
         )
     ]
     collection.validate()

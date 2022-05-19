@@ -9,10 +9,17 @@
       "href": "https://ai4edatasetspublicassets.blob.core.windows.net/assets/aod_docs/Microsoft%20Project%20Eclipse%20API%20Terms%20of%20Use_Mar%202022.pdf",
       "type": "application/pdf",
       "title": "Terms of use"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://www.microsoft.com/en-us/research/uploads/prod/2022/05/ACM_2022-IPSN_FINAL_Eclipse.pdf",
+      "type": "application/pdf",
+      "title": "Eclipse: An End-to-End Platform for Low-Cost, Hyperlocal Environment Sensing in Cities"
     }
   ],
   "stac_extensions": [
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
     "https://stac-extensions.github.io/table/v1.2.0/schema.json"
   ],
   "msft:short_description": "A network of low-cost air quality sensing network for cities and led by the Urban Innovation Group at Microsoft Research",
@@ -107,6 +114,7 @@
       }
     }
   },
+  "sci:citation": "Daepp, Cabral, Ranganathan et al. (2022) Eclipse: An End-to-End Platform for Low-Cost, Hyperlocal Environmental Sensing in Cities. ACM/IEEE Information Processing in Sensor Networks. Milan, Italy. Eclipse: An End-to-End Platform for Low-Cost, Hyperlocal Environmental Sensing in Cities",
   "title": "Urban Innovation Eclipse Sensor Data",
   "extent": {
     "spatial": {
