@@ -70,7 +70,7 @@ def create_eclipse_command(cli):
             "table:storage_options": {"account_name": stac.ACCOUNT_NAME}
         }
         sample_item = stac.create_item(
-            "eclipse/Chicago/2021-10-10",
+            "Chicago/2021-10-10",
             protocol="abfs",
             storage_options=storage_options,
             asset_extra_fields=asset_extra_fields,

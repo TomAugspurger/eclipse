@@ -1,7 +1,7 @@
 {
   "type": "Feature",
   "stac_version": "1.0.0",
-  "id": "eclipse-2021-10-10",
+  "id": "Chicago-2021-10-10",
   "properties": {
     "start_datetime": "2021-10-10T00:00:00Z",
     "end_datetime": "2021-10-17T00:00:00Z",
@@ -39,7 +39,7 @@
       {
         "name": "PM25",
         "type": "double",
-        "description": "Fine particulate matter (PM 2.5) in \u00b5g/m\u00b3"
+        "description": "Uncalibrated Fine particulate matter (PM 2.5) in \u00b5g/m\u00b3"
       },
       {
         "name": "CalibratedPM25",
@@ -47,24 +47,29 @@
         "description": "Calibrated PM 2.5 in \u00b5g/m\u00b3"
       },
       {
+        "name": "CalibratedO3",
+        "type": "double",
+        "description": "Calibrated Ozone in PPB"
+      },
+      {
+        "name": "CalibratedNO2",
+        "type": "double",
+        "description": "Calibrated Nitrogen Dioxide in PPB"
+      },
+      {
+        "name": "CO",
+        "type": "double",
+        "description": "Uncalibrated Carbon monoxide (CO) in PPM"
+      },
+      {
+        "name": "Temperature",
+        "type": "double",
+        "description": "Degree Celsius"
+      },
+      {
         "name": "Humidity",
         "type": "double",
         "description": "Relative humidity"
-      },
-      {
-        "name": "O3",
-        "type": "double",
-        "description": "Ozone in \u00b5g/m\u00b3"
-      },
-      {
-        "name": "NO2",
-        "type": "double",
-        "description": "Nitrous Dioxide in \u00b5g/m\u00b3"
-      },
-      {
-        "name": "RawCO",
-        "type": "double",
-        "description": "Raw carbon monoxide (CO) in PPM"
       },
       {
         "name": "BatteryLevel",
@@ -4106,7 +4111,7 @@
   "links": [],
   "assets": {
     "data": {
-      "href": "abfs://eclipse/Chicago/2021-10-10/data_08175f31-83b8-4811-b68f-14cb2829eb1b_38ba4c75-7565-49da-b500-50afab9df5ec.parquet",
+      "href": "abfs://eclipse/Chicago/2021-10-10/20211010-00_20211017-00.parquet",
       "type": "application/x-parquet",
       "title": "Weekly dataset",
       "table:storage_options": {

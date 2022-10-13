@@ -27,7 +27,7 @@ class PathParts:
 
     @classmethod
     def from_path(cls, p: str) -> "PathParts":
-        region, date_part = p.split("/")
+        *_, region, date_part = p.split("/")
         date = datetime.datetime(*list(map(int, date_part.split("-"))))
 
         return cls(region=region, date=date)
